@@ -1,0 +1,1023 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Booking Penerbangan Final</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f4f7fb;
+      color: #1f2937;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    .hero {
+      background: linear-gradient(135deg, #0f62fe, #38bdf8);
+      color: white;
+      border-radius: 24px;
+      padding: 28px;
+      margin-bottom: 22px;
+      box-shadow: 0 10px 30px rgba(15, 98, 254, 0.18);
+    }
+    .hero h1 {
+      margin: 0 0 8px;
+      font-size: 34px;
+    }
+    .hero p {
+      margin: 0;
+      line-height: 1.6;
+      opacity: 0.95;
+    }
+    .card {
+      background: #fff;
+      border-radius: 22px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: bold;
+      font-size: 14px;
+    }
+    select, input {
+      width: 100%;
+      padding: 12px 14px;
+      border-radius: 14px;
+      border: 1px solid #d1d5db;
+      font-size: 15px;
+      background: #fff;
+    }
+    button {
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 14px;
+      background: #0f62fe;
+      color: white;
+      font-weight: bold;
+      font-size: 16px;
+      cursor: pointer;
+      margin-top: 8px;
+    }
+    button:hover { background: #004ee0; }
+    .btn-green { background: #16a34a; }
+    .btn-green:hover { background: #15803d; }
+    .btn-gray { background: #475569; }
+    .btn-gray:hover { background: #334155; }
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 16px;
+    }
+    .stat {
+      background: rgba(255,255,255,0.14);
+      border-radius: 18px;
+      padding: 16px;
+    }
+    .stat strong {
+      display: block;
+      font-size: 22px;
+      margin-bottom: 6px;
+    }
+    .notice {
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      color: #1d4ed8;
+      border-radius: 16px;
+      padding: 14px 16px;
+      margin-bottom: 18px;
+      line-height: 1.6;
+    }
+    .flight-card {
+      border: 1px solid #e5e7eb;
+      border-radius: 22px;
+      padding: 18px;
+      margin-bottom: 14px;
+      display: grid;
+      grid-template-columns: 1.4fr 1fr auto;
+      gap: 16px;
+      align-items: center;
+    }
+    .airline {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 6px;
+    }
+    .code {
+      color: #6b7280;
+      font-size: 14px;
+      margin-bottom: 10px;
+    }
+    .route-line {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+    .time-box strong {
+      display: block;
+      font-size: 22px;
+      color: #111827;
+    }
+    .time-box span {
+      font-size: 13px;
+      color: #6b7280;
+    }
+    .duration {
+      color: #6b7280;
+      font-size: 13px;
+      white-space: nowrap;
+    }
+    .price-box {
+      text-align: right;
+    }
+    .price {
+      font-size: 24px;
+      font-weight: bold;
+      color: #0f62fe;
+      margin-bottom: 6px;
+    }
+    .meta {
+      color: #6b7280;
+      font-size: 13px;
+      margin-bottom: 8px;
+    }
+    .book-btn {
+      display: inline-block;
+      background: #16a34a;
+      color: #fff;
+      text-decoration: none;
+      padding: 11px 16px;
+      border-radius: 12px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .book-btn:hover { background: #15803d; }
+    .hidden { display: none !important; }
+    .form-section-title {
+      margin: 0 0 14px;
+      font-size: 24px;
+    }
+    .booking-form {
+      margin-top: 14px;
+      border-top: 1px solid #e5e7eb;
+      padding-top: 14px;
+    }
+    .summary-box {
+      background: #f9fafb;
+      border: 1px solid #e5e7eb;
+      border-radius: 18px;
+      padding: 16px;
+      margin-top: 14px;
+      line-height: 1.7;
+    }
+    .badge {
+      display: inline-block;
+      background: #dbeafe;
+      color: #1d4ed8;
+      font-weight: bold;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      margin-bottom: 10px;
+    }
+    .mini {
+      color: #6b7280;
+      font-size: 13px;
+      margin-top: 6px;
+    }
+    .invoice-card {
+      background: linear-gradient(180deg, #ecf5ff 0%, #ffffff 100%);
+      border: 1px solid #bfdbfe;
+      border-radius: 24px;
+      padding: 24px;
+      margin-top: 18px;
+      box-shadow: 0 10px 30px rgba(15, 98, 254, 0.08);
+    }
+    .invoice-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      margin-bottom: 18px;
+    }
+    .invoice-title {
+      font-size: 30px;
+      font-weight: 800;
+      color: #1d4ed8;
+      margin-bottom: 6px;
+    }
+    .status-pill {
+      display: inline-block;
+      padding: 8px 14px;
+      border-radius: 999px;
+      font-weight: bold;
+      font-size: 14px;
+      margin-top: 8px;
+    }
+    .status-pending {
+      background: #fef3c7;
+      color: #92400e;
+    }
+    .status-paid {
+      background: #dcfce7;
+      color: #166534;
+    }
+    .invoice-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+    }
+    .invoice-box {
+      background: #ffffff;
+      border: 1px solid #dbeafe;
+      border-radius: 18px;
+      padding: 16px;
+    }
+    .invoice-box h3 {
+      margin: 0 0 10px;
+      font-size: 20px;
+      color: #1d4ed8;
+    }
+    .invoice-route {
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      border-radius: 18px;
+      padding: 16px;
+      margin: 16px 0;
+    }
+    .invoice-total {
+      font-size: 24px;
+      font-weight: 800;
+      color: #111827;
+    }
+    .checkmark {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #dcfce7;
+      color: #166534;
+      padding: 10px 14px;
+      border-radius: 12px;
+      font-weight: bold;
+      margin-top: 12px;
+    }
+    .proof-preview {
+      margin-top: 12px;
+      max-width: 260px;
+      border-radius: 14px;
+      border: 1px solid #d1d5db;
+      display: block;
+    }
+    .top-actions {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 14px;
+    }
+    @media (max-width: 900px) {
+      .grid, .grid-3, .stats, .top-actions, .invoice-grid { grid-template-columns: 1fr; }
+      .flight-card { grid-template-columns: 1fr; }
+      .price-box { text-align: left; }
+      .hero h1 { font-size: 28px; }
+      .invoice-title { font-size: 24px; }
+    }
+    @media print {
+      body { background: white; }
+      .hero,
+      .card:not(#invoicePrintWrap),
+      #paymentActions,
+      #selectedFlightInfo,
+      .booking-form,
+      .notice,
+      .top-actions {
+        display: none !important;
+      }
+      #invoiceSection {
+        display: block !important;
+        border: none !important;
+        box-shadow: none !important;
+        background: white !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="hero">
+      <div class="badge">Website Booking Penerbangan</div>
+      <h1>Cari, Pilih, dan Pesan Penerbangan</h1>
+      <p>Sudah lengkap dengan invoice siap cetak, kode booking, bukti pembayaran, tanda centang pembayaran, dan tombol ke WhatsApp admin.</p>
+      <div class="stats">
+        <div class="stat"><strong id="totalAirports">0</strong>Bandara aktif</div>
+        <div class="stat"><strong id="totalRoutes">0</strong>Rute aktif</div>
+        <div class="stat"><strong id="totalFlights">1000+</strong>Jadwal demo</div>
+        <div class="stat"><strong>21 Mar - 31 Mei</strong>Periode aktif</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2 class="form-section-title">Form Pencarian Penerbangan</h2>
+      <div class="notice">Cari penerbangan, pilih jadwal, isi data pemesan, lalu invoice akan otomatis muncul setelah disimpan.</div>
+      <div class="grid-3">
+        <div>
+          <label for="from">Dari</label>
+          <select id="from"></select>
+        </div>
+        <div>
+          <label for="to">Ke</label>
+          <select id="to"></select>
+        </div>
+        <div>
+          <label for="date">Tanggal</label>
+          <input type="date" id="date" min="2026-03-21" max="2026-05-31" value="2026-03-21" />
+        </div>
+        <div>
+          <label for="classType">Kelas</label>
+          <select id="classType">
+            <option value="Ekonomi">Ekonomi</option>
+            <option value="Bisnis">Bisnis</option>
+            <option value="First">First</option>
+          </select>
+        </div>
+        <div>
+          <label for="passengers">Jumlah Penumpang</label>
+          <input type="number" id="passengers" min="1" max="9" value="1" />
+        </div>
+        <div>
+          <label>&nbsp;</label>
+          <button type="button" onclick="searchFlights()">Cari Penerbangan</button>
+        </div>
+      </div>
+      <div class="mini">Siap dipakai untuk demo, landing page, atau katalog pemesanan.</div>
+    </div>
+
+    <div class="card">
+      <h2 class="form-section-title">Hasil Pencarian</h2>
+      <div id="searchInfo" class="mini">Silakan cari penerbangan.</div>
+      <div id="results"></div>
+    </div>
+
+    <div class="card hidden" id="bookingSection">
+      <h2 class="form-section-title">Isi Data Pemesanan</h2>
+      <div class="notice">Isi data pemesan dan penumpang, lalu klik simpan untuk membuat invoice.</div>
+      <div id="selectedFlightInfo" class="summary-box"></div>
+
+      <div class="booking-form">
+        <div class="grid">
+          <div>
+            <label for="customerName">Nama Pemesan</label>
+            <input type="text" id="customerName" placeholder="Masukkan nama pemesan" />
+          </div>
+          <div>
+            <label for="customerPhone">Nomor WhatsApp</label>
+            <input type="text" id="customerPhone" placeholder="08xxxxxxxxxx" />
+          </div>
+          <div>
+            <label for="customerEmail">Email</label>
+            <input type="email" id="customerEmail" placeholder="nama@email.com" />
+          </div>
+          <div>
+            <label for="customerId">NIK / No. Identitas</label>
+            <input type="text" id="customerId" placeholder="Masukkan identitas" />
+          </div>
+        </div>
+
+        <div class="grid" style="margin-top:14px;">
+          <div>
+            <label for="passengerName">Nama Penumpang</label>
+            <input type="text" id="passengerName" placeholder="Masukkan nama penumpang" />
+          </div>
+          <div>
+            <label for="passengerTitle">Titel</label>
+            <select id="passengerTitle">
+              <option value="Tuan">Tuan</option>
+              <option value="Nyonya">Nyonya</option>
+              <option value="Nona">Nona</option>
+            </select>
+          </div>
+          <div>
+            <label for="passengerBirth">Tanggal Lahir</label>
+            <input type="date" id="passengerBirth" />
+          </div>
+          <div>
+            <label for="notes">Catatan</label>
+            <input type="text" id="notes" placeholder="Contoh: dekat jendela" />
+          </div>
+        </div>
+
+        <button type="button" onclick="submitBooking()">Simpan Data Pemesanan</button>
+      </div>
+
+      <div id="bookingOutput" class="summary-box hidden"></div>
+      <div id="invoiceSection"></div>
+
+      <div id="paymentActions" class="summary-box hidden">
+        <strong>Langkah berikutnya</strong><br><br>
+        <div class="invoice-box">
+          <strong>BANK BRI</strong><br>
+          A/N : LUTFI DARMAWAN<br>
+          NO REK : 0019-0122-9199-500<br>
+          KODE BANK : 002
+        </div>
+
+        <div style="margin-top:16px;">
+          <label for="paymentProof">Upload Bukti Pembayaran</label>
+          <input type="file" id="paymentProof" accept="image/*" onchange="handlePaymentProof(event)" />
+          <div class="mini">Upload screenshot atau foto bukti transfer.</div>
+          <img id="proofPreview" class="proof-preview hidden" alt="Bukti pembayaran" />
+          <div id="paidCheck" class="checkmark hidden">✔ Pembayaran sudah dilakukan</div>
+        </div>
+
+        <div class="top-actions">
+          <button type="button" class="btn-green" onclick="goToWhatsApp()">Kirim ke WhatsApp Admin</button>
+          <button type="button" class="btn-gray" onclick="printInvoice()">Cetak Invoice</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const airports = [
+      { code: "CGK", city: "Jakarta", name: "Soekarno-Hatta" },
+      { code: "HLP", city: "Jakarta", name: "Halim Perdanakusuma" },
+      { code: "DPS", city: "Denpasar", name: "Ngurah Rai" },
+      { code: "SUB", city: "Surabaya", name: "Juanda" },
+      { code: "UPG", city: "Makassar", name: "Sultan Hasanuddin" },
+      { code: "KNO", city: "Medan", name: "Kualanamu" },
+      { code: "YIA", city: "Yogyakarta", name: "YIA" },
+      { code: "SOC", city: "Solo", name: "Adi Soemarmo" },
+      { code: "SRG", city: "Semarang", name: "Ahmad Yani" },
+      { code: "BDO", city: "Bandung", name: "Husein Sastranegara" },
+      { code: "PLM", city: "Palembang", name: "Sultan Mahmud Badaruddin II" },
+      { code: "PKU", city: "Pekanbaru", name: "Sultan Syarif Kasim II" },
+      { code: "PDG", city: "Padang", name: "Minangkabau" },
+      { code: "BTH", city: "Batam", name: "Hang Nadim" },
+      { code: "PNK", city: "Pontianak", name: "Supadio" },
+      { code: "BPN", city: "Balikpapan", name: "SAMS Sepinggan" },
+      { code: "TRK", city: "Tarakan", name: "Juwata" },
+      { code: "BDJ", city: "Banjarmasin", name: "Syamsudin Noor" },
+      { code: "PKY", city: "Palangkaraya", name: "Tjilik Riwut" },
+      { code: "LOP", city: "Lombok", name: "Zainuddin Abdul Madjid" },
+      { code: "KOE", city: "Kupang", name: "El Tari" },
+      { code: "MDC", city: "Manado", name: "Sam Ratulangi" },
+      { code: "GTO", city: "Gorontalo", name: "Jalaluddin" },
+      { code: "KDI", city: "Kendari", name: "Haluoleo" },
+      { code: "AMQ", city: "Ambon", name: "Pattimura" },
+      { code: "TTE", city: "Ternate", name: "Sultan Babullah" },
+      { code: "SOQ", city: "Sorong", name: "Domine Eduard Osok" },
+      { code: "MKW", city: "Manokwari", name: "Rendani" },
+      { code: "BIK", city: "Biak", name: "Frans Kaisiepo" },
+      { code: "DJJ", city: "Jayapura", name: "Sentani" },
+      { code: "TIM", city: "Timika", name: "Moses Kilangin" },
+      { code: "LUW", city: "Luwuk", name: "Syukuran Aminuddin Amir" },
+      { code: "JOG", city: "Yogyakarta", name: "Adisutjipto" },
+      { code: "AAP", city: "Samarinda", name: "Aji Pangeran Tumenggung Pranoto" },
+      { code: "BTJ", city: "Banda Aceh", name: "Sultan Iskandar Muda" },
+      { code: "TKG", city: "Bandar Lampung", name: "Radin Inten II" },
+      { code: "TJQ", city: "Tanjung Pandan", name: "H.A.S. Hanandjoeddin" },
+      { code: "MJU", city: "Mamuju", name: "Tampa Padang" }
+    ];
+
+    const coreAirlines = ["Garuda Indonesia", "Lion Air", "Batik Air", "Citilink", "Super Air Jet", "Sriwijaya Air", "Wings Air"];
+
+    const featuredRoutes = {
+      "CGK-DPS": { duration: 170, basePrice: 950000 },
+      "DPS-CGK": { duration: 170, basePrice: 980000 },
+      "CGK-SUB": { duration: 90, basePrice: 700000 },
+      "SUB-CGK": { duration: 90, basePrice: 720000 },
+      "CGK-UPG": { duration: 200, basePrice: 1100000 },
+      "UPG-CGK": { duration: 200, basePrice: 1080000 },
+      "CGK-KNO": { duration: 150, basePrice: 1000000 },
+      "KNO-CGK": { duration: 150, basePrice: 1020000 }
+    };
+
+    const featuredTemplates = {
+      "CGK-DPS": [
+        { airline: "Garuda Indonesia", code: "GA-402", departure: "08:00" },
+        { airline: "Lion Air", code: "JT-510", departure: "10:30" },
+        { airline: "Citilink", code: "QG-600", departure: "15:00" },
+        { airline: "Batik Air", code: "ID-6500", departure: "19:30" }
+      ],
+      "DPS-CGK": [
+        { airline: "Garuda Indonesia", code: "GA-403", departure: "07:30" },
+        { airline: "Batik Air", code: "ID-6501", departure: "12:10" },
+        { airline: "Lion Air", code: "JT-511", departure: "18:00" },
+        { airline: "Citilink", code: "QG-601", departure: "20:15" }
+      ]
+    };
+
+    let selectedFlight = null;
+    let savedBookingData = null;
+    let paymentProofUploaded = false;
+    window.currentFlights = [];
+
+    function generateBookingCode() {
+      const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+      let out = "MFS-";
+      for (let i = 0; i < 6; i++) out += chars[Math.floor(Math.random() * chars.length)];
+      return out;
+    }
+
+    function codeSeed(text) {
+      let seed = 0;
+      for (let i = 0; i < text.length; i++) seed += text.charCodeAt(i);
+      return seed;
+    }
+
+    function formatRupiah(value) {
+      return new Intl.NumberFormat("id-ID", {
+        style: "currency",
+        currency: "IDR",
+        maximumFractionDigits: 0
+      }).format(value);
+    }
+
+    function isWeekend(dateStr) {
+      const day = new Date(dateStr + "T00:00:00").getDay();
+      return day === 0 || day === 6;
+    }
+
+    function addMinutes(time, mins) {
+      const [h, m] = time.split(":").map(Number);
+      const total = h * 60 + m + mins;
+      const hh = Math.floor(total / 60) % 24;
+      const mm = total % 60;
+      return `${String(hh).padStart(2, "0")}:${String(mm).padStart(2, "0")}`;
+    }
+
+    function airportLabel(code) {
+      const airport = airports.find(a => a.code === code);
+      return airport ? `${airport.city} (${airport.code}) - ${airport.name}` : code;
+    }
+
+    function populateAirportSelects() {
+      const fromSelect = document.getElementById("from");
+      const toSelect = document.getElementById("to");
+      airports.forEach(airport => {
+        const label = `${airport.city} (${airport.code}) - ${airport.name}`;
+        fromSelect.innerHTML += `<option value="${airport.code}">${label}</option>`;
+        toSelect.innerHTML += `<option value="${airport.code}">${label}</option>`;
+      });
+      fromSelect.value = "CGK";
+      toSelect.value = "DPS";
+      document.getElementById("totalAirports").textContent = airports.length;
+    }
+
+    function estimateDuration(from, to) {
+      const a = codeSeed(from);
+      const b = codeSeed(to);
+      return 55 + ((a + b) % 170);
+    }
+
+    function estimateBasePrice(from, to) {
+      const a = codeSeed(from);
+      const b = codeSeed(to);
+      return 450000 + (((a * 17) + (b * 9)) % 950000);
+    }
+
+    function generateGenericTemplates(from, to) {
+      const seed = codeSeed(from + to);
+      const departures = ["06:00", "09:20", "12:45", "16:10", "20:15"];
+      const count = 4 + (seed % 2);
+      const flights = [];
+      for (let i = 0; i < count; i++) {
+        const airline = coreAirlines[(seed + i) % coreAirlines.length];
+        const prefix = airline === "Garuda Indonesia" ? "GA"
+          : airline === "Lion Air" ? "JT"
+          : airline === "Batik Air" ? "ID"
+          : airline === "Citilink" ? "QG"
+          : airline === "Super Air Jet" ? "IU"
+          : airline === "Sriwijaya Air" ? "SJ"
+          : "IW";
+        flights.push({
+          airline,
+          code: `${prefix}-${100 + ((seed + i * 13) % 899)}`,
+          departure: departures[i]
+        });
+      }
+      return flights;
+    }
+
+    function getRouteInfo(from, to) {
+      const key = `${from}-${to}`;
+      if (featuredRoutes[key]) return featuredRoutes[key];
+      return { duration: estimateDuration(from, to), basePrice: estimateBasePrice(from, to) };
+    }
+
+    function getTemplates(from, to) {
+      const key = `${from}-${to}`;
+      if (featuredTemplates[key]) return featuredTemplates[key];
+      return generateGenericTemplates(from, to);
+    }
+
+    function classMultiplier(classType) {
+      if (classType === "Bisnis") return 1.7;
+      if (classType === "First") return 2.35;
+      return 1;
+    }
+
+    function generateFlights(from, to, date, classType, passengerCount) {
+      if (!from || !to || from === to) return [];
+      if (date < "2026-03-21" || date > "2026-05-31") return [];
+      const route = getRouteInfo(from, to);
+      const templates = getTemplates(from, to);
+      const seed = codeSeed(from + to + date);
+
+      return templates.map((item, index) => {
+        let price = route.basePrice + index * 35000 + ((seed + index * 11) % 50000);
+        if (isWeekend(date)) price = Math.round(price * 1.15);
+        price = Math.round(price * classMultiplier(classType));
+        const seatLeft = Math.max(1, 12 - ((seed + index + passengerCount) % 9));
+        return {
+          airline: item.airline,
+          code: item.code,
+          departure: item.departure,
+          arrival: addMinutes(item.departure, route.duration),
+          duration: `${Math.floor(route.duration / 60)}j ${route.duration % 60}m`,
+          price,
+          seatLeft,
+          classType,
+          from,
+          to,
+          date
+        };
+      });
+    }
+
+    function totalPossibleRoutes() {
+      return airports.length * (airports.length - 1);
+    }
+
+    function estimatedFlightCount() {
+      return totalPossibleRoutes() * 72 * 4;
+    }
+
+    function renderFlights(flights) {
+      const results = document.getElementById("results");
+      if (!flights.length) {
+        results.innerHTML = `<div class="notice">Rute tidak tersedia atau tanggal di luar periode aktif.</div>`;
+        return;
+      }
+
+      results.innerHTML = flights.map((flight, index) => `
+        <div class="flight-card">
+          <div>
+            <div class="airline">${flight.airline}</div>
+            <div class="code">${flight.code} · ${flight.classType}</div>
+            <div class="route-line">
+              <div class="time-box">
+                <strong>${flight.departure}</strong>
+                <span>${airportLabel(flight.from)}</span>
+              </div>
+              <div class="duration">${flight.duration}</div>
+              <div class="time-box">
+                <strong>${flight.arrival}</strong>
+                <span>${airportLabel(flight.to)}</span>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="meta">Tanggal ${flight.date}</div>
+            <div class="meta">Sisa kursi ${flight.seatLeft}</div>
+          </div>
+          <div class="price-box">
+            <div class="price">${formatRupiah(flight.price)}</div>
+            <span class="book-btn" onclick="selectFlight(${index})">Pilih Penerbangan</span>
+          </div>
+        </div>
+      `).join("");
+
+      window.currentFlights = flights;
+    }
+
+    function resetPaymentUI() {
+      document.getElementById("paymentProof").value = "";
+      document.getElementById("proofPreview").src = "";
+      document.getElementById("proofPreview").classList.add("hidden");
+      document.getElementById("paidCheck").classList.add("hidden");
+      paymentProofUploaded = false;
+    }
+
+    function searchFlights() {
+      const from = document.getElementById("from").value;
+      const to = document.getElementById("to").value;
+      const date = document.getElementById("date").value;
+      const classType = document.getElementById("classType").value;
+      const passengers = Number(document.getElementById("passengers").value || 1);
+      const searchInfo = document.getElementById("searchInfo");
+
+      document.getElementById("bookingSection").classList.add("hidden");
+      document.getElementById("bookingOutput").classList.add("hidden");
+      document.getElementById("invoiceSection").classList.add("hidden");
+      document.getElementById("paymentActions").classList.add("hidden");
+      resetPaymentUI();
+      selectedFlight = null;
+      savedBookingData = null;
+
+      if (!date) {
+        searchInfo.textContent = "Silakan pilih tanggal.";
+        document.getElementById("results").innerHTML = "";
+        return;
+      }
+      if (from === to) {
+        searchInfo.textContent = "Bandara asal dan tujuan tidak boleh sama.";
+        document.getElementById("results").innerHTML = "";
+        return;
+      }
+
+      const flights = generateFlights(from, to, date, classType, passengers);
+      searchInfo.textContent = `Ditemukan ${flights.length} penerbangan untuk ${airportLabel(from)} ke ${airportLabel(to)} pada ${date}.`;
+      renderFlights(flights);
+    }
+
+    function selectFlight(index) {
+      selectedFlight = window.currentFlights[index];
+      document.getElementById("bookingSection").classList.remove("hidden");
+      document.getElementById("bookingOutput").classList.add("hidden");
+      document.getElementById("invoiceSection").classList.add("hidden");
+      document.getElementById("paymentActions").classList.add("hidden");
+      resetPaymentUI();
+
+      document.getElementById("selectedFlightInfo").innerHTML = `
+        <strong>Penerbangan terpilih:</strong><br>
+        ${selectedFlight.airline} (${selectedFlight.code})<br>
+        ${airportLabel(selectedFlight.from)} → ${airportLabel(selectedFlight.to)}<br>
+        ${selectedFlight.date} · ${selectedFlight.departure} - ${selectedFlight.arrival}<br>
+        Kelas ${selectedFlight.classType} · Sisa kursi ${selectedFlight.seatLeft}<br>
+        <strong>Total dasar: ${formatRupiah(selectedFlight.price)}</strong>
+      `;
+
+      document.getElementById("bookingSection").scrollIntoView({ behavior: "smooth" });
+    }
+
+    function submitBooking() {
+      if (!selectedFlight) {
+        alert("Pilih penerbangan dulu.");
+        return;
+      }
+
+      const customerName = document.getElementById("customerName").value.trim();
+      const customerPhone = document.getElementById("customerPhone").value.trim();
+      const customerEmail = document.getElementById("customerEmail").value.trim();
+      const customerId = document.getElementById("customerId").value.trim();
+      const passengerName = document.getElementById("passengerName").value.trim();
+      const passengerTitle = document.getElementById("passengerTitle").value;
+      const passengerBirth = document.getElementById("passengerBirth").value;
+      const notes = document.getElementById("notes").value.trim();
+
+      if (!customerName || !customerPhone || !passengerName || !passengerBirth) {
+        alert("Nama pemesan, nomor WhatsApp, nama penumpang, dan tanggal lahir wajib diisi.");
+        return;
+      }
+
+      const bookingCode = generateBookingCode();
+      const adminFee = 25000;
+      const totalPayment = selectedFlight.price + adminFee;
+
+      savedBookingData = {
+        customerName,
+        customerPhone,
+        customerEmail,
+        customerId,
+        passengerName,
+        passengerTitle,
+        passengerBirth,
+        notes,
+        bookingCode,
+        adminFee,
+        totalPayment
+      };
+
+      const output = document.getElementById("bookingOutput");
+      const invoiceSection = document.getElementById("invoiceSection");
+      const paymentActions = document.getElementById("paymentActions");
+
+      output.classList.remove("hidden");
+      invoiceSection.classList.remove("hidden");
+      paymentActions.classList.remove("hidden");
+
+      output.innerHTML = `
+        <strong>Data pemesanan berhasil disimpan di website.</strong><br><br>
+        <strong>Nama Pemesan:</strong> ${customerName}<br>
+        <strong>Penumpang:</strong> ${passengerTitle} ${passengerName}<br>
+        <strong>Kode Booking:</strong> ${bookingCode}
+      `;
+
+      invoiceSection.style.display = "block";
+      invoiceSection.innerHTML = `
+        <div id="invoicePrintWrap" class="invoice-card">
+          <div class="invoice-head">
+            <div>
+              <div class="invoice-title">E-TICKET INVOICE</div>
+              <div><strong>MUSTIKA FLIGHT BOOKING</strong></div>
+              <div><strong>Kode Booking:</strong> ${bookingCode}</div>
+              <span id="invoiceStatus" class="status-pill status-pending">Menunggu Pembayaran</span>
+            </div>
+            <div style="min-width:180px;text-align:right;">
+              <button type="button" class="btn-gray" onclick="printInvoice()">Cetak Invoice</button>
+            </div>
+          </div>
+
+          <div class="invoice-grid">
+            <div class="invoice-box">
+              <h3>Data Pemesan</h3>
+              Nama: ${customerName}<br>
+              WhatsApp: ${customerPhone}<br>
+              Email: ${customerEmail || "-"}<br>
+              No. Identitas: ${customerId || "-"}
+            </div>
+            <div class="invoice-box">
+              <h3>Data Penumpang</h3>
+              ${passengerTitle} ${passengerName}<br>
+              Tanggal Lahir: ${passengerBirth}<br>
+              Catatan: ${notes || "-"}
+            </div>
+          </div>
+
+          <div class="invoice-route">
+            <h3 style="margin:0 0 10px;color:#1d4ed8;">Detail Penerbangan</h3>
+            Maskapai: <strong>${selectedFlight.airline}</strong><br>
+            Kode Penerbangan: ${selectedFlight.code}<br>
+            Rute: ${airportLabel(selectedFlight.from)} → ${airportLabel(selectedFlight.to)}<br>
+            Tanggal: ${selectedFlight.date}<br>
+            Jam: ${selectedFlight.departure} - ${selectedFlight.arrival}<br>
+            Kelas: ${selectedFlight.classType}
+          </div>
+
+          <div class="invoice-grid">
+            <div class="invoice-box">
+              <h3>Rincian Pembayaran</h3>
+              Harga Tiket: ${formatRupiah(selectedFlight.price)}<br>
+              Biaya Admin: ${formatRupiah(adminFee)}<br>
+              <div class="invoice-total">Total Bayar: ${formatRupiah(totalPayment)}</div>
+            </div>
+            <div class="invoice-box">
+              <h3>Pembayaran Bank BRI</h3>
+              A/N : LUTFI DARMAWAN<br>
+              NO REK : 0019-0122-9199-500<br>
+              KODE BANK : 002<br><br>
+              Tiket akan diterbitkan setelah pembayaran diterima.
+            </div>
+          </div>
+        </div>
+      `;
+
+      invoiceSection.scrollIntoView({ behavior: "smooth" });
+      alert("Invoice dan kode booking berhasil dibuat.");
+    }
+
+    function handlePaymentProof(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const preview = document.getElementById("proofPreview");
+      const paidCheck = document.getElementById("paidCheck");
+      const invoiceStatus = document.getElementById("invoiceStatus");
+      const reader = new FileReader();
+
+      reader.onload = function(e) {
+        preview.src = e.target.result;
+        preview.classList.remove("hidden");
+        paidCheck.classList.remove("hidden");
+        paymentProofUploaded = true;
+
+        if (invoiceStatus) {
+          invoiceStatus.textContent = "✔ Sudah Melakukan Pembayaran";
+          invoiceStatus.classList.remove("status-pending");
+          invoiceStatus.classList.add("status-paid");
+        }
+      };
+
+      reader.readAsDataURL(file);
+    }
+
+    function goToWhatsApp() {
+      if (!selectedFlight || !savedBookingData) {
+        alert("Simpan data pemesanan dulu sebelum lanjut ke WhatsApp.");
+        return;
+      }
+
+      const paymentStatus = paymentProofUploaded ? "Sudah upload bukti pembayaran" : "Belum upload bukti pembayaran";
+      const waText = encodeURIComponent(
+        `Halo, saya ingin melanjutkan pembayaran tiket penerbangan.\n\n` +
+        `Kode Booking: ${savedBookingData.bookingCode}\n` +
+        `Nama Pemesan: ${savedBookingData.customerName}\n` +
+        `WhatsApp: ${savedBookingData.customerPhone}\n` +
+        `Email: ${savedBookingData.customerEmail || "-"}\n` +
+        `Identitas: ${savedBookingData.customerId || "-"}\n` +
+        `Penumpang: ${savedBookingData.passengerTitle} ${savedBookingData.passengerName}\n` +
+        `Tanggal Lahir: ${savedBookingData.passengerBirth}\n` +
+        `Catatan: ${savedBookingData.notes || "-"}\n\n` +
+        `Rute: ${airportLabel(selectedFlight.from)} -> ${airportLabel(selectedFlight.to)}\n` +
+        `Tanggal: ${selectedFlight.date}\n` +
+        `Jam: ${selectedFlight.departure} - ${selectedFlight.arrival}\n` +
+        `Maskapai: ${selectedFlight.airline} (${selectedFlight.code})\n` +
+        `Kelas: ${selectedFlight.classType}\n` +
+        `Harga Tiket: ${formatRupiah(selectedFlight.price)}\n` +
+        `Biaya Admin: ${formatRupiah(savedBookingData.adminFee)}\n` +
+        `Total Bayar: ${formatRupiah(savedBookingData.totalPayment)}\n` +
+        `Status Pembayaran: ${paymentStatus}`
+      );
+
+      window.open(`https://wa.me/6285242556466?text=${waText}`, "_blank");
+    }
+
+    function renderSampleInvoice() {
+      const sampleBookingCode = "MFS-8K2PXA";
+      document.getElementById("invoiceSection").innerHTML = `
+        <div id="invoicePrintWrap" class="invoice-card">
+          <div class="invoice-head">
+            <div>
+              <div class="invoice-title">E-TICKET INVOICE</div>
+              <div><strong>MUSTIKA FLIGHT BOOKING</strong></div>
+              <div><strong>Kode Booking:</strong> ${sampleBookingCode}</div>
+              <span class="status-pill status-pending">Menunggu Pembayaran</span>
+            </div>
+            <div style="min-width:180px;text-align:right;">
+              <button type="button" class="btn-gray" onclick="printInvoice()">Cetak Invoice</button>
+            </div>
+          </div>
+
+          <div class="invoice-grid">
+            <div class="invoice-box">
+              <h3>Data Pemesan</h3>
+              Nama: Hesa<br>
+              WhatsApp: 085242556466<br>
+              Email: mustikamotoshop99@gmail.com<br>
+              No. Identitas: 73711
+            </div>
+            <div class="invoice-box">
+              <h3>Data Penumpang</h3>
+              Tuan Hesa<br>
+              Tanggal Lahir: 1997-03-20<br>
+              Catatan: Dekat jendela
+            </div>
+          </div>
+
+          <div class="invoice-route">
+            <h3 style="margin:0 0 10px;color:#1d4ed8;">Detail Penerbangan</h3>
+            Maskapai: <strong>Batik Air</strong><br>
+            Kode Penerbangan: ID-607<br>
+            Rute: Medan (KNO) - Kualanamu → Makassar (UPG) - Sultan Hasanuddin<br>
+            Tanggal: 2026-03-21<br>
+            Jam: 16:10 - 19:13<br>
+            Kelas: Ekonomi
+          </div>
+
+          <div class="invoice-grid">
+            <div class="invoice-box">
+              <h3>Rincian Pembayaran</h3>
+              Harga Tiket: Rp 646.368<br>
+              Biaya Admin: Rp 25.000<br>
+              <div class="invoice-total">Total Bayar: Rp 671.368</div>
+            </div>
+            <div class="invoice-box">
+              <h3>Pembayaran Bank BRI</h3>
+              A/N : LUTFI DARMAWAN<br>
+              NO REK : 0019-0122-9199-500<br>
+              KODE BANK : 002<br><br>
+              Tiket akan diterbitkan setelah pembayaran diterima.
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function printInvoice() {
+      const invoice = document.getElementById("invoiceSection");
+      if (invoice.classList.contains("hidden")) {
+        alert("Invoice belum tersedia.");
+        return;
+      }
+      window.print();
+    }
+
+    populateAirportSelects();
+    document.getElementById("totalRoutes").textContent = totalPossibleRoutes().toLocaleString("id-ID");
+    document.getElementById("totalFlights").textContent = estimatedFlightCount().toLocaleString("id-ID");
+    searchFlights();
+    renderSampleInvoice();
+  </script>
+</body>
+</html>
